@@ -43,20 +43,36 @@
             return false;
         }
     }
+    private function rearrange( $arr ){
+        foreach($arr as $key => $items){
+            foreach($items as $i => $val){
+                $array[$i][$key] = $val;
+            }
+        }
+        return $array;
+    }
     public function process_file($file)
     {
-        if ($file['size'] > $this->max) {
-            echo 'The file is too large!';
-        } elseif ($this->check_type($file['type']) == false) {
-            echo 'Invalid file!';
-        } elseif ($this->dir == false) {
-            echo 'Invalid directory or doesnt exist!';
-        } elseif ($this->if_exists($file['name']) == true) {
-            echo 'File already exists!';
+        if ($this->dir == false) {
+            echo 'Invalid directory or doesnt exist!<br/>';
         } else {
-            move_uploaded_file($file['tmp_name'], $this->dir . '/' . $file['name']);
-            echo "Stored in: " . $this->dir . '/' . $file['name'];
-        }
-    }
+               
+            $file = $this->rearrange($file);
+            foreach($file as $f){
+                if ($f['size'] > $this->max) {
+                    echo 'The file is too large!'.'<br/>';
+                } elseif ($this->check_type($f['type']) == false) {
+                    echo 'Invalid file!'.'<br/>';
+                } elseif ($this->if_exists($f['name']) == true) {
+                    echo 'File already exists!'.'<br/>';
+                } else {
+                    move_uploaded_file($f['tmp_name'], $this->dir . '/' . $f['name']);
+                    echo "Stored in: " . $this->dir . '/' . $f['name'].'<br/>';
+                }
+                
+            } 
+
+        } // end else
+    } // end function
 
 } ?>
