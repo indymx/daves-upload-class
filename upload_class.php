@@ -5,6 +5,7 @@
     private $file;
     private $dir;
     private $max;
+    public $image_names = array();
     private $types = array('application/msword', 'application/pdf', 'image/jpeg',
         'image/png', 'image/gif');
 
@@ -35,14 +36,6 @@
             return false;
         }
     }
-    public function if_exists($file_name)
-    {
-        if (file_exists($this->dir . '/' . $file_name)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
     private function rearrange( $arr ){
         foreach($arr as $key => $items){
             foreach($items as $i => $val){
@@ -51,25 +44,33 @@
         }
         return $array;
     }
+    public function get_size($files)
+    {
+        $sum = array_sum($files['size']);
+        if($sum == 0)
+        {
+            return FALSE;
+        } else { return true;}
+    }
     public function process_file($file)
     {
         if ($this->dir == false) {
             echo 'Invalid directory or doesnt exist!<br/>';
-        } else {
+        } 
+        elseif($this->get_size($file) == false){
+            echo 'No file selected!<br/>';
+        }
+        else {
                
             $file = $this->rearrange($file);
+            $x = 0;
             foreach($file as $f){
-                if ($f['size'] > $this->max) {
-                    echo 'The file is too large!'.'<br/>';
-                } elseif ($this->check_type($f['type']) == false) {
-                    echo 'Invalid file!'.'<br/>';
-                } elseif ($this->if_exists($f['name']) == true) {
-                    echo 'File already exists!'.'<br/>';
-                } else {
-                    move_uploaded_file($f['tmp_name'], $this->dir . '/' . $f['name']);
-                    echo "Stored in: " . $this->dir . '/' . $f['name'].'<br/>';
+                if(!empty($f['name']) && $this->check_type($f['type']) == TRUE && $f['size'] < $this->max)   {
+                        
+                        $this->image_name = rand(15, '1234567890').$f['name'];
+                        $this->image_names[$x++] = $this->url.'/'.$this->image_name;
+                        move_uploaded_file($i['tmp_name'], $this->path.'/'.$this->image_name);
                 }
-                
             } 
 
         } // end else
