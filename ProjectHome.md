@@ -1,0 +1,1 @@
+John Dave Decano's simple PHP upload class. Free to use in your own risk.THanks
