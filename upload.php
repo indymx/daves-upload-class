@@ -1,6 +1,6 @@
-<?php 
-require('upload_class.php');
-$upload = new Upload();
+<?php
+require 'upload_class.php';
+$upload = new upload_class();
 ?>
 <html>
 <head>
@@ -12,7 +12,7 @@ $upload = new Upload();
 <body>
 <?php
 if(isset($_POST)){
-    $dir = dirname(__FILE__).'/images';
+    $dir = __DIR__ .'/images';
     $upload->set_dir($dir);
     $upload->set_max(200000000);
     $upload->process_file($_FILES['file']);
